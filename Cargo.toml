@@ -1,0 +1,13 @@
+[package]
+edition = "2018"
+name = "tg-url-sanitizer"
+version = "0.0.1"
+
+[[bin]]
+name = "tg-url-sanitizer"
+path = "src/main.rs"
+
+[workspace]
+
+[dependencies]
+url-sanitizer = { path = "url-sanitizer" }
