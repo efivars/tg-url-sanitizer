@@ -1,6 +1,9 @@
 use teloxide::prelude::*;
 
-use url_sanitizer::is_valid_url;
+use url_sanitizer::{
+  sanitizer::{UrlSanitizer, YouTubeUrlSanitizer},
+  to_url,
+};
 
 pub struct UrlSanitizerBot {
   token: String,
@@ -15,11 +18,24 @@ impl UrlSanitizerBot {
     println!("Bot started in long-polling mode!");
 
     teloxide::repl(bot, |bot: Bot, msg: Message| async move {
+      // FIXME: do not create sanitizer each time
+      let sanitizer = YouTubeUrlSanitizer::new();
+
       match msg.text() {
         Some(text) => {
-          let reply_text = match is_valid_url(text) {
-            true => "Valid URL",
-            false => "Invalid URL!",
+          let reply_text: String = match to_url(text) {
+            Ok(url) => match sanitizer.sanitize(&url) {
+              Ok(link) => format!("Success: {}", link),
+              Err(e) => match e {
+                url_sanitizer::sanitizer::SanitizeError::NoDomain => {
+                  String::from("Error: specify domain!")
+                }
+                url_sanitizer::sanitizer::SanitizeError::UnacceptableDomain => {
+                  String::from("Error: Unsupported domain")
+                }
+              },
+            },
+            Err(e) => format!("ParseError: {}", e.to_string()),
           };
 
           bot.send_message(msg.chat.id, reply_text).await?;
