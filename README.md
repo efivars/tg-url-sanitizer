@@ -4,6 +4,9 @@
 - [x] Parse bot token from arg param
 - [x] Parse bot token from env param
 - [x] Sanitize YouTube `si` param
+- [ ] (?) Add "screw up" mode for random commercial crap generation instead of removing
+- [ ] Add inline mode support
+- [ ] Add "hot-replace" mode for groups (replace messages containing crappy links with sanitized ones with mentioning original author)
 - [ ] Refactor code to more idiomatic and extendable
 - [ ] Yandex commercial crap sanitizing
 - [ ] Ozon commercial crap sanitizing
