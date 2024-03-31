@@ -6,7 +6,10 @@ trait ToUrl {
 }
 impl ToUrl for &str {
   fn to_url(&self) -> Result<Url, ParseError> {
-    Url::from_str(self)
+    match !self.starts_with("https://") {
+      true => Url::from_str(format!("https://{}", self).as_str()),
+      false => Url::from_str(self),
+    }
   }
 }
 
