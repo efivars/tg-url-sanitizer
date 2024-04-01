@@ -21,7 +21,7 @@ impl UrlSanitizerBot {
       Some(text) => {
         let reply_text: String = match to_url(text) {
           Ok(url) => match sanitizer.sanitize(&url) {
-            Ok(link) => format!("Success: {}", link),
+            Ok(link) => link,
             Err(e) => match e {
               url_sanitizer::sanitizer::SanitizeError::NoDomain => {
                 String::from("Error: specify domain!")
